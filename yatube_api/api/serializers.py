@@ -1,8 +1,8 @@
 from rest_framework import serializers
 from rest_framework.relations import SlugRelatedField
 from posts.models import Comment, Post, Group, Follow, User
-from rest_framework.validators import UniqueTogetherValidator
 from django.shortcuts import get_object_or_404
+
 
 class UserSerializer(serializers.ModelSerializer):
     posts = serializers.StringRelatedField(many=True, read_only=True)
@@ -11,6 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
         model = User
         ref_name = 'ReadOnlyUsers'
+
 
 class PostSerializer(serializers.ModelSerializer):
     author = SlugRelatedField(slug_field='username', read_only=True)

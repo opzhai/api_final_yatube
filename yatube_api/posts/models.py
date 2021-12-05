@@ -3,6 +3,7 @@ from django.db import models
 
 User = get_user_model()
 
+
 class Group(models.Model):
     title = models.CharField("Заголовок", max_length=200)
     description = models.TextField("Описание группы")
@@ -11,6 +12,7 @@ class Group(models.Model):
 
     def __str__(self):
         return f"{self.title}"
+
 
 class Post(models.Model):
     text = models.TextField()
@@ -32,6 +34,7 @@ class Post(models.Model):
     def __str__(self):
         return self.text
 
+
 class Comment(models.Model):
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='comments')
@@ -40,6 +43,7 @@ class Comment(models.Model):
     text = models.TextField()
     created = models.DateTimeField(
         'Дата добавления', auto_now_add=True, db_index=True)
+
 
 class Follow(models.Model):
     user = models.ForeignKey(
