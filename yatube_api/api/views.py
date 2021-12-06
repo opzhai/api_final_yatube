@@ -4,11 +4,11 @@ from rest_framework.response import Response
 from rest_framework import status, permissions
 from posts.models import Post, Group, Comment, User, Follow
 from api.serializers import PostSerializer, GroupSerializer
-from api.serializers import CommentSerializer, UserSerializer, FollowSerializer
+from api.serializers import CommentSerializer, FollowSerializer
 from django.shortcuts import get_object_or_404
 from .permissions import IsAuthorOrReadOnlyPermission
 from rest_framework.pagination import LimitOffsetPagination
-from rest_framework import filters
+from rest_framework import filters, mixins
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -47,11 +47,6 @@ class PostViewSet(viewsets.ModelViewSet):
             return Response(status=status.HTTP_403_FORBIDDEN)
         post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
 
 
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
@@ -98,7 +93,9 @@ class CommentViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class FollowViewSet(viewsets.ModelViewSet):
+class FollowViewSet(mixins.CreateModelMixin,
+                    mixins.ListModelMixin,
+                    viewsets.GenericViewSet):
     serializer_class = FollowSerializer
     permission_classes = (permissions.IsAuthenticated,)
     filter_backends = [filters.SearchFilter]
@@ -109,4 +106,4 @@ class FollowViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        return Follow.objects.filter(user=user)
+        return user.follower
