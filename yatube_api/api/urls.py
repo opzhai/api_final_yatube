@@ -15,7 +15,8 @@ router.register(r'^posts/(?P<post_id>\d+)/comments',
 router.register('follow', FollowViewSet, basename='follow')
 
 v1_patterns = [
-    path('jwt/create/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('jwt/create/',
+         TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('jwt/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('jwt/verify/', TokenVerifyView.as_view(), name='token_refresh'),
     path('', include(router.urls)),

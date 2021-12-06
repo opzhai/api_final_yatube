@@ -2,7 +2,7 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status, permissions
-from posts.models import Post, Group, Comment, User, Follow
+from posts.models import Post, Group, Comment
 from api.serializers import PostSerializer, GroupSerializer
 from api.serializers import CommentSerializer, FollowSerializer
 from django.shortcuts import get_object_or_404
